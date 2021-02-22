@@ -1,0 +1,23 @@
+MAILER
+Для установки mailer необходимо:
+composer req mailer
+После установки нам потребуется свободный smtp протокол, если брать из бесплатных то отлично подойдет smtp от Google:
+port: 465
+server: smtp.gmail.com
+userName: dmitrievd2002@gmail.com
+password: floy23102-
+Итак эти данные необходимо воткнуть в .env в определенное поле свойств MAILER_DSN, которые использует mailer для 
+отправки сообщений:
+MAILER_DSN= smtp://dmitrievd2002@gmail.com:floy23102-@smtp.gmail.com:465
+
+После всех настроек необходимо создать email и отправить его через MailerInterface:
+
+$email = (new Email())
+	->from("mailfrom@example.com")
+	->to("mailto@example.com")
+	->subject("Топик сообщения")
+	->html("<p>Текст сообщения</p>");
+
+$mailer->send($mail);
+
+Обязательно не забыть подключить сервис MailerInterface

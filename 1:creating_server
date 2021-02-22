@@ -1,0 +1,6 @@
+Для создания сервера нам понадобится непосредственно вебсервер - Apache,  база данных для него - Mariadb, языка программирования PHP
+Скачиваем их следуем руководствам на ArchDocumentation
+
+Чтобы запустить сервер и базу данных используем:
+>sudo systemctl start httpd.service
+>sudo sysyemctl start mariadb.service

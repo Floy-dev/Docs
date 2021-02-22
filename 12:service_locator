@@ -1,0 +1,31 @@
+Приступая снова к теме сервисом возникает ситуация при которой прицим SOLID (открытости-закрытости)
+начинает постепеннно нарушаться, так как расширяемость системы начинает приносить трудности и
+сложности. Поэтому необходимо использовать общие конфиги сервисов - services.yaml;
+
+В них можно указывать иерархию вложенности сервисом, то есть если один сервис должен использовать
+еще n-количество других сервисов, то вместо их постоянной инициализации и нагрузки на сервер
+можно связать все подсервис с помощью тэга родителя сервиса.
+Как это осуществить - для начала нужно объявить наш родительский сервис и задать ему тэг:
+
+App\Service\Goods\Filter\Filter:
+	arguments: [!tagged_locator {tag: 'app.goods.filter'}]
+
+После чего необходимо связать подсервисы с главным сервисом:
+
+App\Service\Goods\Filter\PriceFilter:
+	tags:
+		- {name: 'app.goods.filter'}
+
+Благодаря этому Symfony будет понимать связь между ними и сможет передать эти классы с помощью
+ServiceLocator:
+
+public function __constructor(ServiceLocator $serviceLocator){
+	...
+}
+
+public mainFunction(){
+	$classes = array_keys(this->serviceLocator->getProvidedSerices());
+	foreach($classes as $class){
+		$this->serviceLocator->get($class)->someFunctionFromClass(...)->...;
+	}
+}

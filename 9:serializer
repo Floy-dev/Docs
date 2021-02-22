@@ -1,0 +1,16 @@
+Итак допустим нам необходимо вернуть на страницу данные из базы данных в определенном формате, например
+в XML или Json, для этих целей нам и понадобится Serializer.
+Чтобы подключить сериализатор качаем бандл:
+> composer req symfony/serializer
+После его подключения в проекте будет доступны энкодеры, нормализаторы и сам сериализатор
+Для его использования нужно выбрать определенный энкодер в котором данные будут конвертироваться,
+нормализатор объектов и инициализировать сам сериализатор:
+
+$encoder = [new JsonEncoder()];
+$normalizer = [new ObjectNormalizer()];
+$serializer = new Serializer($normalizer, $encoder);
+
+Далее если нужно вывести данные, воспользуемся методом serialize и верем JsonResponse:
+
+$data = $serializer->serialize($someEntity, "json");
+return new JsonResponse($data);

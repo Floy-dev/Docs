@@ -1,0 +1,18 @@
+Для того чтобы быстро заполнить базу данных разнообразными данными, к примеру заполнить сущность Product различными данными
+можно использовать bundle - fixtures.
+> composer req orm-fixtures
+После скачивания необходимо создать fixture класс, восмользуемся make:
+> bin/console make:fixture
+назовем ее как-нибудь и перейдем в код для изменения сущности и ей данных, к примеру:
+
+for ($i=0; $i<10;$i++){
+	$entity = new Message();
+	$entity->setMessage("some random staff");
+	$entity->setPhone(mt_rand(10,100));
+	$manager->persist($entity);
+}
+$manager->flush();
+
+После того как наша фикстура готова можно выполнить все имеющиеся благодаря:
+bin/console doctrine:fixtures:load,
+если необходимо сохранить данные то можно использовать --append

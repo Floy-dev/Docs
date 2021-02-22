@@ -1,0 +1,18 @@
+FOS - friendsofsymfony js-routing - бандл предназначенный для определения роутов контороллеро и передачи их в 
+js, для установки требуется:
+composer req friendsofsymfony/jsrouting-bundle
+После установления пакеты будут установления и готовы к использованию, для получения роутов нужно подключить
+библиотеки и выполнить метод, обязательно предварительно до этого дописать в роуте контроллера определенный атрибут:
+1) Подключение и использование (script.js)
+let Routing = require ('../../vendor/friendsofsymfony/jsrouting-bundle/Resources/public/js/router');
+let Routs = require('./js_routes.json');
+Routing.getRoutingData(Routs);
+let url = Routing.generate('some_route_name');
+
+// your url is ready to use
+
+2) Создание роутов для JS, добавление атрибута в роут
+Для начала в роуте необходимо добавить: , options={"expose"=true}
+После добавления FOS необходимо скомпилировать все роуты в config файл для дальнейшего использования:
+> bin/console fos:js-routing:debug
+> sudo bin/console fos:js-routing:dump --format=json --target=assets/js/js_routes.json

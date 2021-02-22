@@ -1,0 +1,49 @@
+Promise - функция в которую следует передавать функцию, для отслеживания работы переданной функции
+При передаче функции в промис, промис автоматически запускается и выполняет функцию, вместе в функцией также
+передаются два агрумента resolve и reject и исходя из конечного состояния (выполнится ли функция или нет), Промис
+вернет в одну из переменных данные - resolve при успешном окончании, reject при возникновении ошибки.
+Синтаксис:
+new Promise(function(resolve, reject){
+//some interesting code
+if (function_is_completed_successful)
+	resolve("return some successful stuff");
+if (function_is_completed_badly)
+	reject("return some badly stuff");
+})
+.then((response){
+	alert(response)
+})
+.catch((error){
+	alert(error)
+})
+
+Промисы отлично подходят для XMLHtmlRequest, благодаря им можно отследить корректность отправленного запроса
+и исходя из этого выполнить те или иные функции.
+Допустим необходимо выгрузить из база данных комментарии тогда:
+
+let button = document.getElementById("button");
+
+button.addEventListiner('click', function(event){
+	new Promise(function(resolve,reject){
+		let xhr = new XMLHtmlRequest();
+		xhr.open("GET", url) // url берем из FOS
+		
+		xhr.setRequesHeader("X-Requested-With", "XMLHtmlRequest");
+		xhr.addEventListiner('load', function(event){
+			if( this.readyState === 4)
+				if (this.status === 200 && this.statusTEXT === "OK")
+					resolve(JSON.parse(this.responseText))
+
+			else
+				reject(JSON.parse(this.responseText))
+		})		
+
+		xhr.send();
+	})
+})
+.then((response){
+	//DoSomething with page
+})
+.catch((error){
+	//ALERT error
+})
