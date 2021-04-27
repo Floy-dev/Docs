@@ -1,0 +1,29 @@
+Для того чтобы на продакшене пулить без пароля:
+
+1) ssh-keygen -t ed25519 -C "your_email@example.com"
+Выполнить на продакшене, при запуске потребует указать место и названия для ключа
+ - /home/ticket1/.ssh/name_of_key // name_of_key => server_deploy
+passphrase скипаем
+ - enter
+ - enter
+
+2) Идем в папку .ssh и берем от туда ключ из только что сгенерированного ключа
+ - cat server_deploy.pub
+
+3) Переходим в настройки репозитория, settings->deploy keys->add new
+ - title - что угодно, но желательно prod prod_ip
+ - key - ключ из server_deploy.pub
+
+4) На продакшене в папке .ssh, выбираем файл config и пишем туда
+Host server_github
+	HostName github.com
+	IdentityFile ~/.ssh/server_deploy
+
+Это нужно для того, чтобы можно было иметь много ssh подключений к github, поэтому в 
+ Host - переопределение для ssh
+ HostName - сервер - github
+ IdentityFile - приватный ключ
+
+5) Изменить remote ветку на:
+	git remote set-url origin git@HOST_FROM_CONFIG:Floy-dev/dinamo.git
+То есть git ssh, но github.com заменен на наш HOST из конфига ssh 
